@@ -71,14 +71,17 @@ public class FXMLController {
     	String k = this.txtK.getText();
     	
     	try {
-    		int kk = Integer.parseInt(k);
-    		this.sim.setK(kk);
-    		int giorniDiss = this.sim.giorniTotali();
-    		double capMedia = sim.capacitaMedia();
+    		float kk = Float.parseFloat(k);
     		sim.setfMedia(Double.parseDouble(this.txtFMed.getText()));
     		sim.setRiver(boxRiver.getValue());
+    		this.sim.setK(kk);
+    		sim.init();
+    		sim.run();
+    		int giorniDiss = this.sim.giorniTotali();
+    		double capMedia = sim.capacitaMedia();
+    		this.txtResult.appendText("k = " + kk + "\n\n");
     		this.txtResult.appendText("Giorni disservizio: " +giorniDiss + "\n\n");
-    		this.txtResult.appendText("Capacita media: " + capMedia);
+    		this.txtResult.appendText("Capacita media: " + capMedia + "\n\n");
     	}catch(NumberFormatException nfe) {
     		nfe.printStackTrace();
     		this.txtResult.appendText("ERRORE: Devi inserire un numero intero!");

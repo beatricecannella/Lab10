@@ -20,7 +20,7 @@ public class Simulator {
 	
 	//modello del mondo (visione statica del sistema in un determinato istante di tempo;
 	//all'interno metto le variabili che mi interessano del sistema che sto simulando)
-	private List<Flow> flows;
+//	private List<Flow> flows;
 	private double Q;
 	private double C;
 	private List<Flow> fIn;
@@ -30,7 +30,7 @@ public class Simulator {
 	
 
 	//parametri di input
-	private int k;
+	private float k;
 	private double fMedia;
 	private River river;
 	
@@ -45,11 +45,11 @@ public class Simulator {
 		this.queue = new PriorityQueue<>();
 
 		// inizializza modello del mondo
-		this.flows = new ArrayList<>();
+		//this.flows = new ArrayList<>();
 		Q = k*this.fMedia*86400*30;
 		C = Q/2;
 		fIn = m.fDao.getRiverFlow(river);
-		fOutMin = 0.8*this.fMedia; //il flusso in uscita (fOut dovrà almeno essere = a fOutMin)
+		fOutMin = 0.8*this.fMedia*3600*24; //il flusso in uscita (fOut dovrà almeno essere = a fOutMin)
 		
 		//inizializzo i parametri di output
 		this.giorniNoErogazione = 0;
@@ -77,7 +77,7 @@ public class Simulator {
 
 		switch (e.getType()) {
 		case INGRESSO:
-			this.C += e.getFlow().getFlow();
+			this.C += e.getFlow().getFlow()*24*3600;
 			
 			if(C>Q) {
 				this.queue.add(new Event(e.getTime(), EventType.TRACIMAZIONE, f)) ;
@@ -147,14 +147,14 @@ public class Simulator {
 
 
 
-	public int getK() {
+	public float getK() {
 		return k;
 	}
 	
 	
 	
-	public void setK(int k) { // da settare tramite FXMLController
-		this.k = k;
+	public void setK(float kk) { // da settare tramite FXMLController
+		this.k = kk;
 	}
 
 	public double getfMedia() {
